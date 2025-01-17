@@ -1,5 +1,6 @@
 const wrapper = document.querySelector("#wrapper");
 const loadMoreBtn = document.querySelector("#loadMore");
+const storePokemonName = document.querySelector("#storePokemonName");
 const baseURL = "https://pokeapi.co/api/v2/pokemon";
 
 let limit = 20;
@@ -8,8 +9,9 @@ let count = 0;
 const image = [];
 const saveUrl = [];
 
+
 window.addEventListener("load", async () => {
-  const finalData = await getData(
+   const finalData = await getData(
     `${baseURL}?limit=${limit}&offset=${limit * count}`
   );
   console.log(finalData);
@@ -40,7 +42,7 @@ function displayData(data) {
     const parent = document.createElement("div");
     const image = document.createElement("img");
     const name = document.createElement("h3");
-    const type = document.createElement("h3");
+    const type = document.createElement("p");
 
 
     parent.classList.add("parent");
@@ -48,12 +50,12 @@ function displayData(data) {
 
     image.src = obj.sprites.other.dream_world.front_default;
     name.innerText = obj.name;
-    // types.forEach((value) => {
-    //   // console.log("hello");
-    //   type.innerText = obj.type.name;
-    // });
+    
+    
+      type.innerText = obj.types[0].type.name;
 
-    parent.append(image, name,);
+
+    parent.append(image, name, type);
     pokemonDiv.append(parent);
   });
 
@@ -69,4 +71,14 @@ async function getData(url) {
   });
   const data = await Promise.all(saveUrl);
   return data;
+}
+
+storePokemonName.addEventListener("keyup", searchEmoji);
+
+function searchEmoji(e) {
+  if (e.target.value.length > 1) {
+      searchresults = finalData.filter((obj) =>
+          obj.name.includes(e.target.value)
+      );
+  } 
 }

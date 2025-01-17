@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokimon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="heading">
+        <h1>Pokimon Universe</h1>
+        <select id="dropdown">
+            <option value="default" selected disabled> Filter By Type </option>
+            <option value="option1">grass</option>
+            <option value="option2">Water</option>
+            <option value="option3">normal</option>
+            <option value="option3">bug</option>
+            <option value="option3">fire</option>
+            <option value="option3">Poison</option>
+            <option value="option3">ground</option>
+            <option value="option3">electric</option>
+            <option value="option3">fairy</option>
+        </select>
+        <input type="text" placeholder="Search Pokimon By name" id="storePokemonName">
+    </div>
+    <div id="wrapper">
+        <div id="loading">LOADING...</div>
+    </div>
+
+    <button id="loadMore">Load More</button>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

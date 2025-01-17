@@ -8,10 +8,11 @@ let count = 0;
 
 const image = [];
 const saveUrl = [];
+let finalData;
 
 
 window.addEventListener("load", async () => {
-   const finalData = await getData(
+    finalData = await getData(
     `${baseURL}?limit=${limit}&offset=${limit * count}`
   );
   console.log(finalData);
@@ -73,12 +74,13 @@ async function getData(url) {
   return data;
 }
 
-storePokemonName.addEventListener("keyup", searchEmoji);
+storePokemonName.addEventListener("keyup", searchPokimon);
 
-function searchEmoji(e) {
+function searchPokimon(e) {
   if (e.target.value.length > 1) {
-      searchresults = finalData.filter((obj) =>
+      const searchresults = finalData.filter((obj) =>
           obj.name.includes(e.target.value)
       );
+      displayData(searchresults);
   } 
 }

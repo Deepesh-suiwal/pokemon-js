@@ -11,6 +11,7 @@ const saveUrl = [];
 let finalData;
 
 
+
 window.addEventListener("load", async () => {
     finalData = await getData(
     `${baseURL}?limit=${limit}&offset=${limit * count}`
@@ -21,7 +22,7 @@ window.addEventListener("load", async () => {
 
 loadMoreBtn.addEventListener("click", async () => {
   count++;
-  const finalData = await getData(
+   finalData = await getData(
     `${baseURL}?limit=${limit}&offset=${limit * count}`
   );
   // console.log(finalData);
@@ -83,4 +84,7 @@ function searchPokimon(e) {
       );
       displayData(searchresults);
   } 
+  else{
+    displayData(finalData);
+  }
 }

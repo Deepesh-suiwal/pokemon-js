@@ -1,6 +1,13 @@
 const wrapper = document.querySelector("#wrapper");
 const loadMoreBtn = document.querySelector("#loadMore");
 const storePokemonName = document.querySelector("#storePokemonName");
+const mydropdown = document.querySelector("#dropdown");
+let selectedItem;
+mydropdown.addEventListener("change", () => {
+  selectedItem = mydropdown.value
+  console.log(selectedItem);
+});
+
 const baseURL = "https://pokeapi.co/api/v2/pokemon";
 
 let limit = 20;
@@ -13,19 +20,19 @@ let finalData;
 
 
 window.addEventListener("load", async () => {
-    finalData = await getData(
+  finalData = await getData(
     `${baseURL}?limit=${limit}&offset=${limit * count}`
   );
-  console.log(finalData);
+  // console.log(finalData);
   displayData(finalData);
 });
 
 loadMoreBtn.addEventListener("click", async () => {
   count++;
-   finalData = await getData(
+  finalData = await getData(
     `${baseURL}?limit=${limit}&offset=${limit * count}`
   );
-  // console.log(finalData);
+  console.log(finalData);
   displayData(finalData);
 });
 
@@ -52,9 +59,9 @@ function displayData(data) {
 
     image.src = obj.sprites.other.dream_world.front_default;
     name.innerText = obj.name;
-    
-    
-      type.innerText = obj.types[0].type.name;
+
+
+    type.innerText = obj.types[0].type.name;
 
 
     parent.append(image, name, type);
@@ -79,12 +86,14 @@ storePokemonName.addEventListener("keyup", searchPokimon);
 
 function searchPokimon(e) {
   if (e.target.value.length > 1) {
-      const searchresults = finalData.filter((obj) =>
-          obj.name.includes(e.target.value)
-      );
-      displayData(searchresults);
-  } 
-  else{
+    let searchresults = finalData.filter((obj) =>
+      obj.name.includes(e.target.value) && obj.types[0].type.name.includes(selectedItem)
+    );
+    console.log(searchresults);
+    displayData(searchresults);
+  }
+  else {
     displayData(finalData);
   }
 }
+

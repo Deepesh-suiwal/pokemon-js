@@ -4,8 +4,13 @@ const storePokemonName = document.querySelector("#storePokemonName");
 const mydropdown = document.querySelector("#dropdown");
 let selectedItem;
 mydropdown.addEventListener("change", () => {
-  selectedItem = mydropdown.value
+  selectedItem = mydropdown.value;
   console.log(selectedItem);
+  let searchresults = finalData.filter((obj) =>
+    obj.types[0].type.name.includes(selectedItem) 
+  );
+  console.log(searchresults);
+  displayData(searchresults);
 });
 
 const baseURL = "https://pokeapi.co/api/v2/pokemon";
@@ -16,8 +21,6 @@ let count = 0;
 const image = [];
 const saveUrl = [];
 let finalData;
-
-
 
 window.addEventListener("load", async () => {
   finalData = await getData(
@@ -53,16 +56,13 @@ function displayData(data) {
     const name = document.createElement("h3");
     const type = document.createElement("p");
 
-
     parent.classList.add("parent");
     name.classList.add("name");
 
     image.src = obj.sprites.other.dream_world.front_default;
     name.innerText = obj.name;
 
-
     type.innerText = obj.types[0].type.name;
-
 
     parent.append(image, name, type);
     pokemonDiv.append(parent);
@@ -86,14 +86,14 @@ storePokemonName.addEventListener("keyup", searchPokimon);
 
 function searchPokimon(e) {
   if (e.target.value.length > 1) {
-    let searchresults = finalData.filter((obj) =>
-      obj.name.includes(e.target.value) && obj.types[0].type.name.includes(selectedItem)
+    let searchresults = finalData.filter(
+      (obj) =>
+        obj.name.includes(e.target.value) 
+        // obj.types[0].type.name.includes(selectedItem)
     );
     console.log(searchresults);
     displayData(searchresults);
-  }
-  else {
+  } else {
     displayData(finalData);
   }
 }
-

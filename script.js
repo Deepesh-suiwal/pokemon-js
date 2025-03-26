@@ -3,14 +3,24 @@ const loadMoreBtn = document.querySelector("#loadMore");
 const storePokemonName = document.querySelector("#storePokemonName");
 const mydropdown = document.querySelector("#dropdown");
 let selectedItem;
-mydropdown.addEventListener("change", () => {
+
+mydropdown.addEventListener("change", async () => {
   selectedItem = mydropdown.value;
-  console.log(selectedItem);
-  let searchresults = finalData.filter((obj) =>
-    obj.types[0].type.name.includes(selectedItem) 
-  );
-  console.log(searchresults);
-  displayData(searchresults);
+
+  if (selectedItem === "All types") {
+    count = 0;
+    finalData = await getData(
+      `${baseURL}?limit=${limit}&offset=${limit * count}`
+    );
+    displayData(finalData);
+    filterByType(finalData);
+  } else {
+    let searchresults = finalData.filter((obj) =>
+      obj.types[0].type.name.includes(selectedItem)
+    );
+    
+    displayData(searchresults);
+  }
 });
 
 const baseURL = "https://pokeapi.co/api/v2/pokemon";
@@ -26,8 +36,10 @@ window.addEventListener("load", async () => {
   finalData = await getData(
     `${baseURL}?limit=${limit}&offset=${limit * count}`
   );
-  // console.log(finalData);
+
+ 
   displayData(finalData);
+  filterByType(finalData);
 });
 
 loadMoreBtn.addEventListener("click", async () => {
@@ -35,14 +47,40 @@ loadMoreBtn.addEventListener("click", async () => {
   finalData = await getData(
     `${baseURL}?limit=${limit}&offset=${limit * count}`
   );
-  console.log(finalData);
+  
   displayData(finalData);
+  filterByType(finalData);
 });
 
 async function pokimon(url) {
   const response = await fetch(url);
   const result = await response.json();
   return result;
+}
+function filterByType(data) {
+  
+
+  let defaultOption = document.createElement("option");
+  defaultOption.value = "All types";
+  defaultOption.innerText = "All types";
+
+  mydropdown.innerHTML = "";
+  mydropdown.append(defaultOption);
+
+  const types = new Set();
+
+  data.forEach((pokemon) => {
+    pokemon.types.forEach((typeObj) => {
+      types.add(typeObj.type.name);
+    });
+  });
+
+  types.forEach((type) => {
+    let option = document.createElement("option");
+    option.value = type;
+    option.innerText = type;
+    mydropdown.append(option);
+  });
 }
 
 function displayData(data) {
@@ -86,12 +124,9 @@ storePokemonName.addEventListener("keyup", searchPokimon);
 
 function searchPokimon(e) {
   if (e.target.value.length > 1) {
-    let searchresults = finalData.filter(
-      (obj) =>
-        obj.name.includes(e.target.value) 
-        // obj.types[0].type.name.includes(selectedItem)
+    let searchresults = finalData.filter((obj) =>
+      obj.name.includes(e.target.value)
     );
-    console.log(searchresults);
     displayData(searchresults);
   } else {
     displayData(finalData);
